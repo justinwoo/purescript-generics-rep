@@ -13,6 +13,8 @@ module Data.Generic.Rep
   ) where
 
 import Data.Maybe (Maybe(..))
+import Data.Unit (unit)
+import Unsafe.Coerce (unsafeCoerce)
 
 -- | A representation for types with no constructors.
 data NoConstructors
@@ -55,3 +57,7 @@ instance genericMaybe
   from Nothing = Inl (Constructor NoArguments)
   from (Just a) = Inr (Constructor (Argument a))
 
+instance genericArray
+  :: Generic (Array a) (Constructor "Array" (Argument a)) where
+  to _ = []
+  from _ = Constructor (Argument (unsafeCoerce unit))
